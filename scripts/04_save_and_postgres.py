@@ -1,17 +1,20 @@
-import pandas as pd
+import os
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 import psycopg2
+import pandas as pd
 
-# Load cleaned data
-trips = pd.read_csv(r"F:\ubar-trip-analysis-logistics\data\cleaned_data\Trip_Details_Cleaned.csv")
-locations = pd.read_csv(r"F:\ubar-trip-analysis-logistics\data\cleaned_data\Location_Table_Cleaned.csv")
+BASE_DIR = os.path.join("..", "data")
+trips = pd.read_csv(os.path.join(BASE_DIR, "cleaned_data", "Trip_Details_Cleaned.csv"))
+locations = pd.read_csv(os.path.join(BASE_DIR, "cleaned_data", "Location_Table_Cleaned.csv"))
 
-# PostgreSQL connection
-username = "postgres"
-password = "1234"
-host = "localhost"
-port = "5432"
-database = "ubar_trip_analysis"
+load_dotenv()
+
+username = os.getenv("DB_USERNAME")
+password = os.getenv("DB_PASSWORD")
+host = os.getenv("DB_HOST")
+port = os.getenv("DB_PORT")
+database = os.getenv("DB_NAME")
 
 engine = create_engine(f"postgresql+psycopg2://{username}:{password}@{host}:{port}/{database}")
 

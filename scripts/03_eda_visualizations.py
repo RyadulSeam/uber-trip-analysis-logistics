@@ -4,8 +4,14 @@ import seaborn as sns
 
 sns.set(style="whitegrid")
 
-# Load cleaned data
-trips = pd.read_csv(r"F:\ubar-trip-analysis-logistics\data\cleaned_data\Trip_Details_Cleaned.csv")
+import pandas as pd
+import os
+
+BASE_DIR = os.path.join("..", "data")
+
+# Load datasets
+trips = pd.read_csv(os.path.join(BASE_DIR, "raw_data", "Uber Trip Details.csv"))
+locations = pd.read_csv(os.path.join(BASE_DIR, "raw_data", "Location Table.csv"))
 
 # EDA: Exploratory Data Analysis
 print("Missing values:\n", trips.isnull().sum())

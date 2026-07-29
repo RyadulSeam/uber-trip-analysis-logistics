@@ -10,7 +10,7 @@ demand.rename(columns={'pickup_time':'ds','trips':'y'}, inplace=True)
 model = Prophet()
 model.fit(demand)
 
-future = model.make_future_dataframe(periods=168, freq='H')
+future = model.make_future_dataframe(periods=168, freq='h')
 forecast = model.predict(future)
 
 model.plot(forecast)
