@@ -305,14 +305,13 @@ The `.pbix` file itself isn't shared publicly, to prevent unauthorized reuse (a 
 ## 👤 Author & Contact
 
 **Ryadul Seam**
-
 **Data Analytics & Power BI Consultant | Founder @ SEAM ANALYTICS**
 
-**I help Retail, Logistics, and Mobility teams turn raw operational data into clear, actionable business insights.**
+I help Retail, Logistics, and Mobility teams turn raw operational data into clear, actionable business insights — from ETL pipelines and forecasting models to interactive Power BI dashboards like this one, built on your own operational data.
 
-- 📧 Email: [ryadulisla@gmail.com](mailto:ryadulisla@gmail.com)
-- 🔗 LinkedIn: [linkedin.com/in/ryadulseam-data](https://www.linkedin.com/in/ryadulseam-data)
-- 💻 GitHub: [github.com/RyadulSeam](https://github.com/RyadulSeam)
+- 📧 Email: ryadulisla@gmail.com
+- 🔗 LinkedIn: linkedin.com/in/ryadulseam-data
+- 💻 GitHub: github.com/RyadulSeam
 
 Feel free to connect or reach out to collaborate on your next analytics project.
 
