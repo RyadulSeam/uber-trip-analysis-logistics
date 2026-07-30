@@ -267,6 +267,10 @@ python 08_ml_payment_prediction.py
 
 > **Note:** Then run `sql/sql_queries.sql` against the loaded PostgreSQL tables to reproduce the KPIs feeding the dashboard, and open the Power BI file to explore the dashboard interactively.
 
+### View the Dashboard
+
+Open the Power BI `.pbix` file ( not included in this repo for size reasons, DM me on [linkedin.com/in/ryadulseam-data](https://www.linkedin.com/in/ryadulseam-data) for the live .pbix file ) and connect it to your local PostgreSQL instance, or explore the static exports in `dashboard_images/`.
+
 ---
 
 ## 📁 Reports
