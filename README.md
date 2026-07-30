@@ -2,7 +2,7 @@
 
 **End-to-End Ride-Hailing Analytics & Decision-Support System for a Multi-Borough Uber Operation**
 
-![Dashboard Overview](dashboard_images/dashboard_overview.PNG)
+![Dashboard Overview](dashboard_images/overview_of_total_booking_value.PNG)
 
 Analyzing **103,728 trips** across New York City boroughs to uncover demand cycles, revenue drivers, and fleet optimization opportunities using **Python, PostgreSQL, Machine Learning, and Power BI**.
 
