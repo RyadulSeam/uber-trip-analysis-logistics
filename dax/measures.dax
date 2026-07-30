@@ -1,0 +1,165 @@
+// =============================================
+
+// UBER TRIP ANALYSIS - DAX MEASURES
+
+// =============================================
+
+// Developed by Ryadul Seam
+
+// =============================================
+
+// KPI MEASURES
+
+// =============================================
+
+Total Bookings = 
+COUNT('Trip Details'[Trip ID])
+
+Total Booking Value = 
+SUM('Trip Details'[fare_amount]) + SUM('Trip Details'[Surge Fee])
+
+Avg Booking Value = 
+DIVIDE([Total Booking Value], [Total Bookings], BLANK())
+
+Avg Trip Distance = 
+VAR AvgMiles = AVERAGE('Trip Details'[trip_distance])
+RETURN
+CONCATENATE(FORMAT(AvgMiles, "0"), " miles")
+
+Avg Trip Time = 
+VAR AvgMin = 
+    AVERAGEX(
+        'Trip Details',
+        DATEDIFF('Trip Details'[Pickup Time], 'Trip Details'[Drop Off Time], MINUTE)
+    )
+RETURN
+CONCATENATE(FORMAT(AvgMin, "0"), " min")
+
+Total Trip Distance = 
+VAR TotalMiles = SUM('Trip Details'[trip_distance]) / 1000
+RETURN
+CONCATENATE(FORMAT(TotalMiles, "0"), "K miles")
+
+Trip Distance = 
+SUM('Trip Details'[trip_distance])
+
+
+// =============================================
+// CHART & CARD MEASURES
+// =============================================
+
+Farthest Trip = 
+VAR MaxDistance = MAX('Trip Details'[trip_distance])
+VAR PickupLocation =
+    CALCULATE(
+        SELECTEDVALUE('Location Table'[Location]),
+        'Trip Details'[trip_distance] = MaxDistance,
+        USERELATIONSHIP('Trip Details'[PULocationID], 'Location Table'[LocationID])
+    )
+VAR DropoffLocation =
+    CALCULATE(
+        SELECTEDVALUE('Location Table'[Location]),
+        'Trip Details'[trip_distance] = MaxDistance,
+        USERELATIONSHIP('Trip Details'[DOLocationID], 'Location Table'[LocationID])
+    )
+RETURN
+"Pickup: " & PickupLocation & " → Drop-off: " & DropoffLocation & " (" & FORMAT(MaxDistance, "0.0") & " miles)"
+
+
+Most Frequent Pickup Point = 
+VAR PickupSummary =
+    ADDCOLUMNS(
+        SUMMARIZE('Trip Details', 'Location Table'[Location]),
+        "PickupCount", CALCULATE(COUNT('Trip Details'[Trip ID]))
+    )
+VAR Ranked =
+    ADDCOLUMNS(
+        PickupSummary,
+        "Rank", RANKX(PickupSummary, [PickupCount], , DESC, Dense)
+    )
+VAR TopPickup =
+    FILTER(Ranked, [Rank] = 1)
+RETURN
+CONCATENATEX(TopPickup, 'Location Table'[Location], ", ")
+
+
+Most Frequent Dropoff Point = 
+VAR DropoffSummary =
+    ADDCOLUMNS(
+        SUMMARIZE(
+            'Trip Details',
+            'Location Table'[Location]
+        ),
+        "DropoffCount",
+        CALCULATE(
+            COUNT('Trip Details'[Trip ID]),
+            USERELATIONSHIP('Trip Details'[DOLocationID], 'Location Table'[LocationID])
+        )
+    )
+VAR Ranked =
+    ADDCOLUMNS(
+        DropoffSummary,
+        "Rank", RANKX(DropoffSummary, [DropoffCount], , DESC, Dense)
+    )
+VAR TopDropoff =
+    FILTER(Ranked, [Rank] = 1)
+RETURN
+CONCATENATEX(TopDropoff, 'Location Table'[Location], ", ")
+
+
+// =============================================
+// DYNAMIC TITLE MEASURES
+// =============================================
+
+Dynamic Tittle = 
+SWITCH(
+    TRUE(),
+    SELECTEDVALUE('Dynamic Measure'[Dynamic Measure Order]) = 0, "Total Bookings",
+    SELECTEDVALUE('Dynamic Measure'[Dynamic Measure Order]) = 1, "Total Booking Value",
+    SELECTEDVALUE('Dynamic Measure'[Dynamic Measure Order]) = 2, "Trip Distance",
+    "Other"
+)
+
+Tittle for by Hour & Day = 
+[Dynamic Tittle] & " by Hour & Day"
+
+Tittle for Total Bookings by Pickup Time (Hour) = 
+[Dynamic Tittle] & " by Pickup Time (Hour)"
+
+
+// =============================================
+// HELPER / COLUMN MEASURES (Calculated Columns recommended)
+// =============================================
+
+// Note: These are better created as Calculated Columns, not Measures
+
+// Pickup Hour = HOUR('Trip Details'[Pickup Time])
+// Pickup Date = DATE(YEAR('Trip Details'[Pickup Time]), MONTH('Trip Details'[Pickup Time]), DAY('Trip Details'[Pickup Time]))
+// Trip Type (Day/Night) =
+// VAR hour_of_day = HOUR('Trip Details'[Pickup Time])
+// RETURN IF(hour_of_day < 6 || hour_of_day >= 17, "Night Trip", "Day Trip")
+
+
+// =============================================
+// CALENDAR TABLE (Create as Calculated Table)
+// =============================================
+
+// Calendar Table = 
+// CALENDAR(
+//     MIN('Trip Details'[Pickup Time]),
+//     MAX('Trip Details'[Pickup Time])
+// )
+
+// Day Name = FORMAT('Calendar Table'[Date], "ddd")
+// Day Number = WEEKDAY('Calendar Table'[Date], 2)
+
+
+// =============================================
+// DYNAMIC MEASURE TABLE (Create as Calculated Table)
+// =============================================
+
+// Dynamic Measure = {
+//     ("Total Bookings", NAMEOF('All Measures'[Total Bookings]), 0),
+//     ("Total Booking Value", NAMEOF('All Measures'[Total Booking Value]), 1),
+//     ("Trip Distance", NAMEOF('All Measures'[Trip Distance]), 2)
+// }
