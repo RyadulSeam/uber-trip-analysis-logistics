@@ -269,7 +269,9 @@ python 08_ml_payment_prediction.py
 
 ### View the Dashboard
 
-Open the Power BI `.pbix` file ( not included in this repo for size reasons, DM me on [linkedin.com/in/ryadulseam-data](https://www.linkedin.com/in/ryadulseam-data) for the live .pbix file ) and connect it to your local PostgreSQL instance, or explore the static exports in `dashboard_images/`.
+Explore the static page exports in `dashboard_images/`, or open the SQL queries and DAX measures directly to see the logic behind the dashboard.
+
+The `.pbix` file itself isn't shared publicly, to prevent unauthorized reuse (a live file can too easily be re-uploaded under someone else's name). If you're a business looking for a similar dashboard, ETL pipeline, or forecasting model built on **your own** operational data, reach out via [LinkedIn](https://www.linkedin.com/in/ryadulseam-data) or email — I build these end-to-end for retail/logistics teams.
 
 ---
 
