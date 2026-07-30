@@ -1,142 +1,85 @@
-<div align="center">
+# 🚕 Uber Trip Analysis — NYC Logistics & Mobility Intelligence
 
-# 🚕 Uber Trip Analysis | NYC Logistics & Mobility Intelligence
+**End-to-End Ride-Hailing Analytics & Decision-Support System for a Multi-Borough Uber Operation**
 
-**An end-to-end data analytics project turning 100K+ raw ride-hailing logs into an executive decision-support system.**
+![Dashboard Overview](dashboard_images/dashboard_overview.PNG)
 
-`ETL` → `PostgreSQL` → `EDA` → `Machine Learning` → `Power BI` → `Executive Reporting`
-
-[![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Power BI](https://img.shields.io/badge/Power%20BI-Dashboard-F2C811?logo=powerbi&logoColor=black)](https://powerbi.microsoft.com/)
-[![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?logo=scikitlearn&logoColor=white)](https://scikit-learn.org/)
-[![Prophet](https://img.shields.io/badge/Prophet-Forecasting-0081A1)](https://facebook.github.io/prophet/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-
-[Live Dashboard Preview](#-dashboard-preview) • [Key Insights](#-key-business-insights) • [ML Models](#-machine-learning-models) • [Getting Started](#-getting-started) • [Author](#-author)
-
-</div>
+Analyzing **103,728 trips** across New York City boroughs to uncover demand cycles, revenue drivers, and fleet optimization opportunities using **Python, PostgreSQL, Machine Learning, and Power BI**.
 
 ---
 
-## 📌 Overview
+## 📌 Table of Contents
 
-This project analyzes **103,728 Uber trips** across New York City boroughs during **June 2024**, covering **$1.6M** in booking value and **349K miles** traveled. It simulates a real-world consulting engagement for a ride-hailing operator that needs visibility into fleet utilization, demand cycles, and revenue drivers to move from **reactive, fixed-shift dispatching** to a **predictive, data-driven supply strategy**.
-
-The project follows a complete analytics lifecycle — from raw CSV ingestion to a polished, interactive Power BI dashboard delivered alongside an executive summary report and stakeholder presentation.
-
-> 📄 Full narrative available in [`reports/executive_summary_report.md`](reports/executive_summary_report.md) and [`notebooks/Conclusion_&_Business_Summary.md`](notebooks/Conclusion_&_Business_Summary.md)
+- [Project Overview](#-project-overview)
+- [Business Problem](#-business-problem)
+- [Dataset](#-dataset)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Pipeline Workflow](#-pipeline-workflow)
+- [Data Cleaning & Feature Engineering](#-data-cleaning--feature-engineering)
+- [SQL Analysis Highlights](#-sql-analysis-highlights)
+- [Power BI Dashboard](#-power-bi-dashboard)
+- [Key Insights](#-key-insights)
+- [Machine Learning Models](#-machine-learning-models)
+- [Getting Started](#-getting-started)
+- [Reports](#-reports)
+- [Limitations](#-limitations)
+- [Final Recommendations](#-final-recommendations)
+- [Author & Contact](#-author--contact)
+- [License](#-license)
 
 ---
 
-## 🧭 Business Problem
+## 📌 Project Overview
+
+This project analyzes **103,728 Uber trips** across New York City boroughs during **June 2024**, covering **$1.6M** in booking value and **349K miles** traveled. It simulates a real-world consulting engagement for a ride-hailing operator that needs visibility into fleet utilization, demand cycles, and revenue drivers in order to move from reactive, fixed-shift dispatching to a predictive, data-driven supply strategy.
+
+The project follows a complete analytics lifecycle — from raw CSV ingestion to a polished, interactive Power BI dashboard — delivered alongside an executive summary report and a stakeholder presentation deck.
+
+**Key result:** Identified a sharp **65.3% night-trip demand share** with a commuter/evening surge between **5–7 PM**, pinpointed **LaGuardia, Penn Station, and JFK** as the top three revenue hubs, and delivered a three-page interactive Power BI dashboard with drill-through to individual trip level.
+
+📄 Full narrative available in `reports/executive_summary_report.md` and `notebooks/Conclusion_&_Business_Summary.md`
+
+---
+
+## 💼 Business Problem
 
 Ride-hailing fleets operating without granular visibility into hourly demand curves and vehicle-level margins are forced into reactive dispatching — leading to longer wait times, lower driver earnings, and missed surge revenue. This project builds the analytical foundation (data pipeline, models, and dashboard) needed to answer three core questions:
 
-1. **When** does demand peak, and how should driver supply be staged around it?
-2. **Where** are the highest-value pickup/drop-off corridors?
-3. **Which** vehicle tiers, payment methods, and customer segments actually drive revenue?
+1. When does demand peak, and how should driver supply be staged around it?
+2. Where are the highest-value pickup/drop-off corridors?
+3. Which vehicle tiers, payment methods, and customer segments actually drive revenue?
 
 ---
 
-## 🏗️ Architecture & Data Pipeline
+## 🗃️ Dataset
 
-```
-Raw CSVs  →  Python ETL & Cleaning  →  PostgreSQL  →  EDA & Feature Engineering
-   →  Machine Learning (scikit-learn, Prophet)  →  Power BI Dashboard  →  Executive Reporting
-```
-
-| Stage | Description | Tools |
-|---|---|---|
-| **1. Extraction** | Ingest 103K+ raw trip records and a location lookup table | `pandas` |
-| **2. Structuring** | Clean, type-cast, feature-engineer, and load into a relational database | `pandas`, `PostgreSQL`, `SQLAlchemy` |
-| **3. Modeling** | Fare prediction, demand forecasting, customer segmentation, payment classification | `scikit-learn`, `Prophet` |
-| **4. Illumination** | Interactive drill-through dashboard with custom DAX and matrix heatmaps | `Power BI`, `DAX` |
+- **Source:** Raw trip-log CSVs + a location lookup table
+- **Time Period:** June 2024 (single calendar month)
+- **Scope:** 103,728 trips across New York City boroughs
+- **Key Columns:** Trip ID, pickup/drop-off timestamps, pickup/drop-off location, vehicle type, distance, fare, payment method, customer ID
+- **Processed Versions:** Cleaned, type-cast, and feature-engineered datasets stored in `data/cleaned_data/`
 
 ---
 
-## 📊 Key Business Insights
+## 🛠️ Tech Stack
 
-| Metric | Value |
+| Layer | Tools |
 |---|---|
-| Total Bookings | **103,728** |
-| Total Booking Value | **$1.6M** |
-| Total Distance Covered | **349K miles** |
-| Avg. Booking Value | **$15.0** |
-| Avg. Trip Time | **16 min** |
-
-- **Demand is highly time-dependent** — night trips account for **65.3%** of volume, with a sharp commuter/evening surge between **5–7 PM** and weekend revenue peaking on **Sunday ($283K)**.
-- **UberX dominates volume** (38,744 bookings) but **premium tiers (Uber Black, Comfort, UberXL)** contribute **$750K+ combined revenue** — a clear upsell opportunity.
-- **Geographic concentration**: LaGuardia Airport ($74K), Penn Station ($63K), and JFK Airport ($62K) are the top revenue hubs.
-- **Cash and Uber Pay** dominate the payment mix (~99% of transactions); minority methods (Amazon Pay, Google Pay) are too sparse to model reliably.
-
----
-
-## 🤖 Machine Learning Models
-
-Four exploratory models were built to demonstrate business-oriented ML applications — each evaluated with an **honest, caveated assessment** rather than headline metrics alone.
-
-| Model | Approach | Result | Caveat |
-|---|---|---|---|
-| **Fare Prediction** | Random Forest Regression | R² = 0.989, RMSE ≈ 0.91 | Unusually high R² suggests fares are near-deterministic from distance/duration in this dataset — treat as proof-of-concept, not a production pricing model |
-| **Demand Forecasting** | Prophet (7-day hourly) | Captures daily/weekly seasonality | Needs rigorous hourly resampling and out-of-time validation before production use |
-| **Customer Segmentation** | KMeans (k=4) | 4 distinct rider profiles identified | Cluster count chosen without formal elbow/silhouette validation |
-| **Payment Classification** | Random Forest Classifier | 91% overall accuracy | Misleading due to severe class imbalance — near-zero precision/recall on minority payment classes |
-
-Scripts: [`scripts/05_ml_fare_prediction.py`](scripts/05_ml_fare_prediction.py) · [`06_ml_demand_forecasting.py`](scripts/06_ml_demand_forecasting.py) · [`07_ml_customer_segmentation.py`](scripts/07_ml_customer_segmentation.py) · [`08_ml_payment_prediction.py`](scripts/08_ml_payment_prediction.py)
-
----
-
-## 📈 Dashboard Preview
-
-The Power BI dashboard has three pages: **Overview**, **Time Analysis**, and **Details** (row-level drill-through), with synced slicers, date filtering, and custom DAX measures.
-
-<table>
-<tr>
-<td width="50%">
-
-**Overview Analysis**
-Executive KPIs, vehicle-type breakdown, payment mix, and location analysis.
-
-![Overview](dashboard_images/overview_of_total_bookings.png)
-
-</td>
-<td width="50%">
-
-**Time Analysis**
-Hourly/daily demand curves and an hour-by-day heatmap matrix.
-
-![Time Analysis](dashboard_images/time_analysis_of_total_bookings.png)
-
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-**Trip Details (Drill-Through)**
-Row-level transaction visibility down to individual trip ID.
-
-![Details](dashboard_images/drill_though_details.png)
-
-</td>
-<td width="50%">
-
-**Interactive Tooltip**
-Hover-triggered vehicle-type breakdown on the day/hour chart.
-
-![Tooltip](dashboard_images/tool_tip_for_day_time_chart.png)
-
-</td>
-</tr>
-</table>
-
-📽️ Full presentation deck: [`reports/project_presentation.pdf`](reports/project_presentation.pdf)
+| Database | PostgreSQL |
+| ETL & Analysis | Python (pandas, SQLAlchemy) |
+| Machine Learning | scikit-learn (RandomForestRegressor, RandomForestClassifier, KMeans) |
+| Forecasting | Facebook Prophet |
+| Visualization (EDA) | matplotlib, seaborn |
+| BI Dashboard | Power BI (Power Query, DAX) |
+| Data Modeling | Relational schema with custom DAX measures |
+| Others | Git, GitHub |
 
 ---
 
 ## 🗂️ Project Structure
 
-```
+```bash
 uber-trip-analysis-logistics/
 │
 ├── README.md
@@ -172,20 +115,123 @@ uber-trip-analysis-logistics/
 │   ├── executive_summary_report.md
 │   └── project_presentation.pdf
 │
-├── dashboard_images/            # Power BI page exports
+├── dashboard_images/             # Power BI page exports
 └── assets/                       # Dashboard icons & visual elements
 ```
+
+---
+
+## 🔄 Pipeline Workflow
+
+```
+Raw CSVs (103,728 trips)
+        │
+        ▼
+  01_import_and_load.py    → ingests raw trip records and location lookup table
+        │
+        ▼
+  02_etl_cleaning.py       → cleans, type-casts, and feature-engineers the dataset
+        │
+        ▼
+  03_eda_visualizations.py → exploratory visuals: hourly, daily, and borough-level trends
+        │
+        ▼
+  04_save_and_postgres.py  → loads cleaned data into PostgreSQL
+        │
+        ├──▶ 05_ml_fare_prediction.py        (Random Forest Regression)
+        ├──▶ 06_ml_demand_forecasting.py     (Prophet, 7-day hourly)
+        ├──▶ 07_ml_customer_segmentation.py  (KMeans, k=4)
+        └──▶ 08_ml_payment_prediction.py     (Random Forest Classification)
+        │
+        ▼
+  PostgreSQL                → sql_queries.sql (demand curves, revenue hubs, vehicle-tier mix)
+        │
+        ▼
+  Power BI                  → measures.dax + dashboard visuals → Executive Summary & Presentation
+```
+
+---
+
+## 🧹 Data Cleaning & Feature Engineering
+
+- Converted raw pickup/drop-off timestamps into proper datetime format
+- Type-cast and cleaned vehicle type, payment method, and location fields
+- Engineered time-based features (hour, day-of-week, night/day flag) for demand analysis
+- Imputed missing location values as "Unknown" rather than dropping records
+- Built a relational schema and loaded cleaned data into PostgreSQL for downstream querying
+
+---
+
+## 📊 SQL Analysis Highlights
+
+The `sql/sql_queries.sql` file contains modular, CTE-driven queries covering:
+
+- Hourly and day-of-week demand curves used to build the heatmap matrix
+- Revenue ranking by pickup/drop-off location (airport and station hubs)
+- Vehicle-tier revenue contribution vs. trip volume
+- Payment method distribution and reliability checks
+- Window-function-based trip and revenue trend analysis
+
+---
+
+## 📈 Power BI Dashboard
+
+An interactive, three-page dashboard with synced slicers, date filtering, and custom DAX measures:
+
+- **Overview** — Executive KPIs, vehicle-type breakdown, payment mix, and location analysis
+- **Time Analysis** — Hourly/daily demand curves and an hour-by-day heatmap matrix, with hover-triggered vehicle-type tooltips
+- **Details (Drill-Through)** — Row-level transaction visibility down to individual trip ID
+
+| Overview | Time Analysis | Trip Details |
+|---|---|---|
+| ![Overview](dashboard_images/overview.PNG) | ![Time Analysis](dashboard_images/time_analysis.PNG) | ![Trip Details](dashboard_images/trip_details.PNG) |
+
+📽️ Full presentation deck: `reports/project_presentation.pdf`
+
+---
+
+## 🔍 Key Insights
+
+- **Demand timing:** Night trips account for **65.3%** of total volume, with a sharp commuter/evening surge between **5–7 PM**; weekend revenue peaks on **Sunday ($283K)**.
+- **Overall performance:** Total Bookings = **103,728**, Total Booking Value = **$1.6M**, Total Distance = **349K miles**, Avg. Booking Value = **$15.0**, Avg. Trip Time = **16 min**.
+- **Vehicle-tier mix:** UberX dominates volume (**38,744 bookings**), but premium tiers (Uber Black, Comfort, UberXL) contribute **$750K+** combined revenue — a clear upsell opportunity for tier-mix optimization.
+- **Geographic concentration:** **LaGuardia Airport ($74K)**, **Penn Station ($63K)**, and **JFK Airport ($62K)** are the top three revenue hubs — priority zones for driver staging.
+- **Payment mix:** Cash and Uber Pay dominate transactions (**~99%**); minority methods (Amazon Pay, Google Pay) are too sparse to model reliably.
+
+Full strategic recommendations are available in `reports/executive_summary_report.md`.
+
+---
+
+## 🤖 Machine Learning Models
+
+Four exploratory models were built to demonstrate business-oriented ML applications — each evaluated with an honest, caveated assessment rather than headline metrics alone.
+
+| Model | Approach | Result | Caveat |
+|---|---|---|---|
+| Fare Prediction | Random Forest Regression | R² = 0.989, RMSE ≈ 0.91 | Unusually high R² suggests fares are near-deterministic from distance/duration in this dataset — treat as proof-of-concept, not a production pricing model |
+| Demand Forecasting | Prophet (7-day hourly) | Captures daily/weekly seasonality | Needs rigorous hourly resampling and out-of-time validation before production use |
+| Customer Segmentation | KMeans (k=4) | 4 distinct rider profiles identified | Cluster count chosen without formal elbow/silhouette validation |
+| Payment Classification | Random Forest Classifier | 91% overall accuracy | Misleading due to severe class imbalance — near-zero precision/recall on minority payment classes |
+
+Scripts: `scripts/05_ml_fare_prediction.py` · `06_ml_demand_forecasting.py` · `07_ml_customer_segmentation.py` · `08_ml_payment_prediction.py`
 
 ---
 
 ## ⚙️ Getting Started
 
 ### Prerequisites
-- Python 3.11+
-- PostgreSQL instance (local or hosted)
-- Power BI Desktop (to open/edit the `.pbix` dashboard)
 
-### Installation
+**Required:**
+- Python 3.11+ ![Python](https://img.shields.io/badge/Python-3.11+-blue)
+- PostgreSQL (local or hosted) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-13+-blue)
+- Power BI Desktop (to open/edit the `.pbix` dashboard) ![Power BI](https://img.shields.io/badge/Power%20BI-Dashboard-yellow)
+
+**Recommended Tools:**
+- VS Code (with Python extension)
+- Jupyter Notebook (for exploratory analysis)
+- Git & GitHub
+
+### Install Dependencies
 
 ```bash
 git clone https://github.com/RyadulSeam/uber-trip-analysis-logistics.git
@@ -193,7 +239,7 @@ cd uber-trip-analysis-logistics
 pip install -r requirements.txt
 ```
 
-### Configure the database
+### Configure the Database
 
 Create a `.env` file in the project root with your PostgreSQL credentials:
 
@@ -205,7 +251,7 @@ DB_PORT=5432
 DB_NAME=your_database
 ```
 
-### Run the pipeline
+### Run the Pipeline
 
 ```bash
 cd scripts
@@ -219,7 +265,15 @@ python 07_ml_customer_segmentation.py
 python 08_ml_payment_prediction.py
 ```
 
-Then run [`sql/sql_queries.sql`](sql/sql_queries.sql) against the loaded PostgreSQL tables to reproduce the KPIs feeding the dashboard, and open the Power BI file to explore the dashboard interactively.
+> **Note:** Then run `sql/sql_queries.sql` against the loaded PostgreSQL tables to reproduce the KPIs feeding the dashboard, and open the Power BI file to explore the dashboard interactively.
+
+---
+
+## 📁 Reports
+
+- 📄 **[Executive Summary](reports/executive_summary_report.md)** — strategic overview and business recommendations
+- 📊 **[Project Presentation](reports/project_presentation.pdf)** — stakeholder-facing slide deck
+- 🗒️ **[Conclusion & Business Summary](notebooks/Conclusion_&_Business_Summary.md)** — full analytical narrative
 
 ---
 
@@ -231,22 +285,37 @@ Then run [`sql/sql_queries.sql`](sql/sql_queries.sql) against the loaded Postgre
 
 ---
 
-## 👤 Author
+## ✅ Final Recommendations
 
-**Ryadul Seam** — Data Analytics & Power BI Consultant, Founder of **Seam Analytics**
-
-- 🔗 LinkedIn: [linkedin.com/in/ryadulseam-data](https://linkedin.com/in/ryadulseam-data)
-- 💻 GitHub: [github.com/RyadulSeam](https://github.com/RyadulSeam)
-- 📧 Email: ryadulisla@gmail.com
+- Stage driver supply ahead of the 5–7 PM commuter surge and the Sunday revenue peak
+- Prioritize driver positioning around LaGuardia, Penn Station, and JFK — the top three revenue hubs
+- Promote premium vehicle tiers (Black, Comfort, XL) to riders in high-value corridors to capture the upsell opportunity
+- Validate the fare prediction and demand forecasting models on out-of-time data before any production deployment
+- Expand the dataset beyond a single month to enable seasonal and month-over-month analysis
+- Address class imbalance before relying on the payment classification model operationally
 
 ---
 
-## 📄 License
+## 👤 Author & Contact
 
-This project is licensed under the [MIT License](LICENSE).
+**Ryadul Seam**
 
-<div align="center">
+**Data Analytics & Power BI Consultant | Founder @ SEAM ANALYTICS**
 
-⭐ If this project was useful or interesting, consider giving it a star!
+**I help Retail, Logistics, and Mobility teams turn raw operational data into clear, actionable business insights.**
 
-</div>
+- 📧 Email: [ryadulisla@gmail.com](mailto:ryadulisla@gmail.com)
+- 🔗 LinkedIn: [linkedin.com/in/ryadulseam-data](https://www.linkedin.com/in/ryadulseam-data)
+- 💻 GitHub: [github.com/RyadulSeam](https://github.com/RyadulSeam)
+
+Feel free to connect or reach out to collaborate on your next analytics project.
+
+---
+
+## 📄 License ![License](https://img.shields.io/badge/License-MIT-green)
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
+<p align="center">Built with ❤️ for data-driven mobility & logistics decisions<br>⭐ Star this repo if you found it useful!</p>
