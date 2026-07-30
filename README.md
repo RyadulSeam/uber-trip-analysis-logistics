@@ -184,7 +184,7 @@ An interactive, three-page dashboard with synced slicers, date filtering, and cu
 
 | Overview | Time Analysis | Trip Details |
 |---|---|---|
-| ![Overview](dashboard_images/overview.PNG) | ![Time Analysis](dashboard_images/time_analysis.PNG) | ![Trip Details](dashboard_images/trip_details.PNG) |
+| ![Overview](dashboard_images/overview_of_total_bookings.png) | ![Time Analysis](dashboard_images/time_analysis_of_trip_distance.png) | ![Trip Details](dashboard_images/drill_though_details.png) |
 
 📽️ Full presentation deck: `reports/project_presentation.pdf`
 
