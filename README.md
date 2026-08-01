@@ -188,6 +188,43 @@ An interactive, three-page dashboard with synced slicers, date filtering, and cu
 
 📽️ Full presentation deck: `reports/project_presentation.pdf`
 
+The Power BI dashboard has three pages: **Overview**, **Time Analysis**, and **Details** (row-level drill-through), with synced slicers, date filtering, and custom DAX measures.
+ 
+<table>
+<tr>
+<td width="50%">
+**Overview Analysis**
+Executive KPIs, vehicle-type breakdown, payment mix, and location analysis.
+ 
+![Overview](dashboard_images/overview_of_total_bookings.png)
+ 
+</td>
+<td width="50%">
+**Time Analysis**
+Hourly/daily demand curves and an hour-by-day heatmap matrix.
+ 
+![Time Analysis](dashboard_images/time_analysis_of_total_bookings.png)
+ 
+</td>
+</tr>
+<tr>
+<td width="50%">
+**Trip Details (Drill-Through)**
+Row-level transaction visibility down to individual trip ID.
+ 
+![Details](dashboard_images/drill_though_details.png)
+ 
+</td>
+<td width="50%">
+**Interactive Tooltip**
+Hover-triggered vehicle-type breakdown on the day/hour chart.
+ 
+![Tooltip](dashboard_images/tool_tip_for_day_time_chart.png)
+ 
+</td>
+</tr>
+</table>
+
 ---
 
 ## 🔍 Key Insights
