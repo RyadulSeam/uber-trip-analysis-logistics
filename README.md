@@ -305,6 +305,7 @@ The `.pbix` file itself isn't shared publicly, to prevent unauthorized reuse (a 
 ## 👤 Author & Contact
 
 **Ryadul Seam**
+
 **Data Analytics & Power BI Consultant | Founder @ SEAM ANALYTICS**
 
 I help Retail, Logistics, and Mobility teams turn raw operational data into clear, actionable business insights — from ETL pipelines and forecasting models to interactive Power BI dashboards like this one, built on your own operational data.
