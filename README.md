@@ -310,9 +310,9 @@ The `.pbix` file itself isn't shared publicly, to prevent unauthorized reuse (a 
 
 I help Retail, Logistics, and Mobility teams turn raw operational data into clear, actionable business insights — from ETL pipelines and forecasting models to interactive Power BI dashboards like this one, built on your own operational data.
 
-- 📧 Email: ryadulisla@gmail.com
-- 🔗 LinkedIn: linkedin.com/in/ryadulseam-data
-- 💻 GitHub: github.com/RyadulSeam
+- 📧 Email: [ryadulisla@gmail.com](mailto:ryadulisla@gmail.com)
+- 🔗 LinkedIn: [linkedin.com/in/ryadulseam-data](https://www.linkedin.com/in/ryadulseam-data)
+- 🔗 Portfolio: [[Ryadul Seam | Data Analyst |Portfolio](https://substantial-vole-da7.notion.site/Ryadul-Seam-Data-Analyst-Portfolio-2d8fd4f37d128056b5aeeee355a325fe)]
 
 Feel free to connect or reach out to collaborate on your next analytics project.
 
